@@ -67,13 +67,24 @@ void createNewHabit(){
   //save habit method
 
   void saveNewHabit () {
+    //add the dialog to the list
+    setState(() {
+      listofHabits.add([_newHabitNameController.text, false]);
+    });
+
+        //clear new habit while cancelling
+_newHabitNameController.clear();
+//pop out the the dialog
+Navigator.of(context).pop();
 
   }
 
   //cancel habit method
 
   void cancelNewHabit (){
+    //clear new habit while cancelling
 _newHabitNameController.clear();
+//pop out the the dialog
 Navigator.of(context).pop();
 
   }
