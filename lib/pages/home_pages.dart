@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/components/habit_tile.dart';
+import 'package:habit_tracker/components/my_fab.dart';
+import 'package:habit_tracker/components/new_habit_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +29,7 @@ List listofHabits = [
 
 // let's create a new method variable
 
- bool? isCompleted = false;
+ //bool? isCompleted = false;
 
 // let's create a 
 
@@ -38,12 +40,43 @@ void onTapchange(bool value, int index){
   });
 }
 
+final _newHabitNameController = TextEditingController();
+
+
+// create a new habit
+
+void createNewHabit(){
+
+  showDialog(context: context, builder: (context) {
+    return EnterNewHabitBox(
+      controller: _newHabitNameController, 
+      onCancel: cancelNewHabit, 
+      onSave: saveNewHabit,);
+  });
 
 
 
 
 
 
+
+
+
+}
+
+  //save habit method
+
+  void saveNewHabit () {
+
+  }
+
+  //cancel habit method
+
+  void cancelNewHabit (){
+_newHabitNameController.clear();
+Navigator.of(context).pop();
+
+  }
 
 
 
@@ -53,6 +86,7 @@ void onTapchange(bool value, int index){
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
+      floatingActionButton: MyFloatingActionButton(onPressed: () => createNewHabit(),),
 
       body: ListView.builder(
 
