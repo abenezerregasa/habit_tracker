@@ -11,113 +11,107 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // in order to handle each list indivisually we gotta use a list view!
 
+  List listofHabits = [
+    ['Study', false],
+    ['Gym', false],
+    ['Prayer', false],
+    ['Music', false],
+    ['Family time', false],
+  ];
 
-// in order to handle each list indivisually we gotta use a list view!
+  // let's create a new method variable
 
-List listofHabits = [
+  //bool? isCompleted = false;
 
-  ['Study', false],
-  ['Gym', false],
-  ['Prayer', false],
-  ['Music', false],
-  ['Family time', false],
+  // let's create a
 
+  void onTapchange(bool value, int index) {
+    setState(() {
+      listofHabits[index][1] = value;
+    });
+  }
 
-];
+  final _newHabitNameController = TextEditingController();
 
+  // create a new habit
 
-// let's create a new method variable
-
- //bool? isCompleted = false;
-
-// let's create a 
-
-
-void onTapchange(bool value, int index){
-  setState(() {
-    listofHabits[index][1] = value;
-  });
-}
-
-final _newHabitNameController = TextEditingController();
-
-
-// create a new habit
-
-void createNewHabit(){
-
-  showDialog(context: context, builder: (context) {
-    return EnterNewHabitBox(
-      controller: _newHabitNameController, 
-      onCancel: cancelNewHabit, 
-      onSave: saveNewHabit,);
-  });
-
-
-
-
-
-
-
-
-
-}
+  void createNewHabit() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return EnterNewHabitBox(
+          controller: _newHabitNameController,
+          onCancel: cancelNewHabit,
+          onSave: saveNewHabit,
+        );
+      },
+    );
+  }
 
   //save habit method
 
-  void saveNewHabit () {
+  void saveNewHabit() {
     //add the dialog to the list
     setState(() {
       listofHabits.add([_newHabitNameController.text, false]);
     });
 
-        //clear new habit while cancelling
-_newHabitNameController.clear();
-//pop out the the dialog
-Navigator.of(context).pop();
-
+    //clear new habit while cancelling
+    _newHabitNameController.clear();
+    //pop out the the dialog
+    Navigator.of(context).pop();
   }
 
   //cancel habit method
 
-  void cancelNewHabit (){
+  void cancelNewHabit() {
     //clear new habit while cancelling
-_newHabitNameController.clear();
-//pop out the the dialog
-Navigator.of(context).pop();
-
+    _newHabitNameController.clear();
+    //pop out the the dialog
+    Navigator.of(context).pop();
   }
 
 
 
 
+  //setting 
+
+
+
+  //delete
+
+  void deleteTheHabit(int index){
+
+
+setState(() {
+  listofHabits.removeAt(index);
+  
+});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      floatingActionButton: MyFloatingActionButton(onPressed: () => createNewHabit(),),
+      floatingActionButton: MyFloatingActionButton(
+        onPressed: () => createNewHabit(),
+      ),
 
       body: ListView.builder(
+        itemCount: listofHabits.length,
 
-
-      itemCount: listofHabits.length,
-      
-      
-      itemBuilder: (context, index) {
-
-      
-        
-
-       return HabitTile(
-          habitCompleted: listofHabits[index][1], 
-          habitName: listofHabits[index][0], 
-          onChanged: (Value) => onTapchange(Value!, index),
+        itemBuilder: (context, index) {
+          return HabitTile(
+            habitCompleted: listofHabits[index][1],
+            habitName: listofHabits[index][0],
+            onChanged: (Value) => onTapchange(Value!, index),
+            settingTapped: (BuildContext) {},
+            deleteTapped: (p0) => deleteTheHabit(index),
           );
-      
-      }, )
-
+        },
+      ),
     );
   }
 }
