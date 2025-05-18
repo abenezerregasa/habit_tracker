@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/components/habit_tile.dart';
 import 'package:habit_tracker/components/my_fab.dart';
-import 'package:habit_tracker/components/new_habit_box.dart';
+import 'package:habit_tracker/components/my_alert_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) {
-        return EnterNewHabitBox(
+        return MyAlertBox(
           controller: _newHabitNameController,
           onCancel: cancelNewHabit,
           onSave: saveNewHabit,
@@ -77,6 +77,26 @@ class _HomePageState extends State<HomePage> {
 
 
   //setting 
+  void settingHabit(int index){
+
+    showDialog(context: context, builder:  (context) {
+      return MyAlertBox(controller: _newHabitNameController, onCancel: () => cancelNewHabit(), onSave: () => saveSettingHabit(index),);
+    },);
+    
+ 
+  }
+
+
+
+  //save index habit implemented
+
+  void saveSettingHabit(int index){
+    setState(() {
+      listofHabits[index][0] = _newHabitNameController.text;
+    });
+    _newHabitNameController.clear();
+    Navigator.of(context).pop();
+  }
 
 
 
@@ -107,7 +127,7 @@ setState(() {
             habitCompleted: listofHabits[index][1],
             habitName: listofHabits[index][0],
             onChanged: (Value) => onTapchange(Value!, index),
-            settingTapped: (BuildContext) {},
+            settingTapped: (p0) => settingHabit(index),
             deleteTapped: (p0) => deleteTheHabit(index),
           );
         },
